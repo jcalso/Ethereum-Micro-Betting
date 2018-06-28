@@ -14,10 +14,13 @@ contract Bet{
     State public state2;
     
 constructor() public payable {
-    Player1 = msg.sender
+    Player1 = msg.sender;
 }
 
-
+ modifier condition(bool _condition) {
+     require(_condition);
+     _;
+ }
 modifier onlyPlayer1(){
     require(msg.sender == Player1);
     _;
@@ -35,13 +38,39 @@ modifier inState2(State _state2){
     _;
 }
 
-//Determine odds
-//Determine Wager
+event Player1Win();
+event Player2Win();
+event Cancelled();
+event BetPlaced();
+
+//The number you enter in the odds field gives your opponent 1 to _odds odds;
+function placeBet(uint _odds, uint _wager) {
+    odds = _odds;
+    wager = _wager;
+    Player1 = msg.sender;
+}
+function cancel(){
+    
+}
+function confirmBet(){
+    Player2 = msg.sender;
+}
 //Deposit a stake that locks until both players agree to a result
 //require that the stake is greater than the odds * wager...
-function cancel()
 
-function confirmWinner()
+
+
+
+function confirmWinnerP1(){
+    
+}
+function confirmWinnerP2(){
+    
+}
+
+function payWinner(){
+    
+}
 
 
 //If player 1 wins, both parties confirm that player1 is the winner
