@@ -2,8 +2,8 @@ pragma solidity ^0.4.22;
 
 contract Bet{
     uint public wager;
-    uint public stake;
-    //uint public odds;
+    //uint public stake;
+   // uint public odds;
     
     address public Player1;
     address public Player2;
@@ -15,10 +15,6 @@ contract Bet{
     
 constructor() public payable {
     Player1 = msg.sender;
-    stake = msg.value;
-    require(stake%5 == 0);
-    wager = stake/5;
-    
 }
 
  modifier condition(bool _condition) {
@@ -48,8 +44,13 @@ event Cancelled();
 event BetPlaced();
 
 //The number you enter in the odds field gives your opponent 1 to _odds odds;
+function placeBet(uint _odds, uint _wager) {
+    odds = _odds;
+    wager = _wager;
+    Player1 = msg.sender;
+}
 function cancel(){
-    require(msg.sender == Player1);
+    
 }
 function confirmBet(){
     Player2 = msg.sender;
