@@ -35,19 +35,23 @@ modifier inState(State _state){
     _;
 }
 
+event BetInitiated();
+event BetPlaced();
+event Cancelled();
 event Player1Win();
 event Player2Win();
-event Cancelled();
-event BetPlaced();
 event PayWinner();
 
-//The number you enter in the odds field gives your opponent 1 to _odds odds;
-function placeBet( uint _wager)public{
+//TO DO:
+//Deposit a stake that locks until both players agree to a result
+//require that the stake is greater than the odds * wager...
+function initiateBet(uint _wager) public{
     //odds = _odds;
+
     wager = _wager;
     Player1 = msg.sender;
-    
     state = State.Created;
+    emit BetInitiated();
 }
 function cancel() public onlyPlayer1{
     require(state == State.Created);
@@ -56,15 +60,14 @@ function cancel() public onlyPlayer1{
 }
 function confirmBet()public {
     emit BetPlaced();
+
+    require(state != State.Inactive);
     require(msg.sender != Player1);
+
     Player2 = msg.sender;
     
     state = State.Locked;
 }
-
-//TO DO:
-//Deposit a stake that locks until both players agree to a result
-//require that the stake is greater than the odds * wager...
 
 function confirmWinnerP1()public onlyPlayer2 inState(State.Locked){
     Winner = Player1;
